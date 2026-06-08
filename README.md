@@ -45,8 +45,6 @@ https://mineru.net/apiManage/docs
 DEFAULT_MINERU_TOKEN = "your token"
 ```
 
-如果仓库会公开到 GitHub，不建议提交真实 Token。可以保留占位值，在本地使用环境变量或命令行参数覆盖。
-
 方式二：通过环境变量配置。
 
 PowerShell:
@@ -69,25 +67,34 @@ python scripts/analyze_pdf_with_mineru.py /path/to/file.pdf --token your-mineru-
 
 ## 使用方式
 
-在仓库根目录运行：
+这个目录本身就是给 Agent 使用的 Skill。使用时不需要用户手动运行脚本，直接把整个 `mineru-pdf-analysis/` 文件夹交给 Agent，并要求它安装这个 Skill。
+
+Agent 拿到文件夹后，应当：
+
+1. 将整个 `mineru-pdf-analysis/` 目录复制到自己的 skills 目录。
+2. 阅读并遵循 `SKILL.md`。
+3. 在用户上传或引用 PDF 时，调用 `scripts/analyze_pdf_with_mineru.py` 完成解析。
+4. 读取脚本输出 JSON 中的 `cleaned_markdown_path`，再基于清洗后的 Markdown 回答问题。
+
+如果需要手动调试脚本，可以在仓库根目录运行：
 
 ```bash
 python scripts/analyze_pdf_with_mineru.py /path/to/file.pdf
 ```
 
-Windows PowerShell 示例：
+Windows PowerShell 调试示例：
 
 ```powershell
 python .\scripts\analyze_pdf_with_mineru.py "C:\Users\PC\Documents\example.pdf"
 ```
 
-指定输出目录：
+手动指定输出目录：
 
 ```bash
 python scripts/analyze_pdf_with_mineru.py /path/to/file.pdf --output-dir ./mineru-output/example
 ```
 
-扫描版 PDF 可开启 OCR：
+扫描版 PDF 可开启 OCR 调试：
 
 ```bash
 python scripts/analyze_pdf_with_mineru.py /path/to/file.pdf --ocr
